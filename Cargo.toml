@@ -1,0 +1,26 @@
+[package]
+name = "omne-attest"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.75"
+license = "Apache-2.0"
+description = "Verify AMD SEV-SNP attestation reports against AMD's key chain, locally — plus the attested claim that binds a report to a rental, a nonce and an ML-KEM-768 enclave key."
+repository = "https://github.com/OmneDAO/omne-attest"
+homepage = "https://omne.foundation"
+documentation = "https://docs.rs/omne-attest"
+readme = "README.md"
+keywords = ["sev-snp", "attestation", "confidential-computing", "amd", "ml-kem"]
+categories = ["cryptography", "hardware-support"]
+exclude = ["/.github"]
+
+[dependencies]
+sha2 = "0.11.0"
+p384 = { version = "0.13", features = ["ecdsa", "sha384"] }
+rsa = { version = "0.9", features = ["sha2"] }
+x509-cert = "0.2"
+der = "0.7"
+ml-kem = { version = "0.3", features = ["getrandom"] }
+crypto-common = "0.2"
+
+[dev-dependencies]
+hex = "0.4"
