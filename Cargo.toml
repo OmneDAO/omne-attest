@@ -9,7 +9,7 @@ repository = "https://github.com/OmneDAO/omne-attest"
 homepage = "https://omne.foundation"
 documentation = "https://docs.rs/omne-attest"
 readme = "README.md"
-keywords = ["sev-snp", "attestation", "confidential-computing", "amd", "ml-kem"]
+keywords = ["sev-snp", "attestation", "enclave", "amd", "ml-kem"]
 categories = ["cryptography", "hardware-support"]
 exclude = ["/.github"]
 
