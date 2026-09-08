@@ -1,15 +1,17 @@
 name: ci
-# NOTE (2026-09-08): automatic triggers are off because GitHub Actions is
-# currently blocked on this account by a billing issue — runs fail before they
-# start, which would show a red X that says nothing about the code. The checks
-# below are exactly what is run locally before every commit
-# (cargo build / test / doc / clippy -D warnings / fmt --check) and they pass.
-# Restore `push` and `pull_request` here the moment billing is sorted.
+# This repository is public, so Actions minutes are free — the standing rule
+# ("no Actions workflows in private repos") does not bind here.
 on:
+  push:
+    branches: [main]
+  pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
-  test:
+  rust:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,3 +23,35 @@ jobs:
       - run: cargo test --doc
       - run: cargo clippy --all-targets -- -D warnings
       - run: cargo fmt --check
+
+  python:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.13"]
+    defaults:
+      run:
+        working-directory: python
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install -e '.[test]'
+      - run: pytest -q
+
+  vectors-match:
+    # The two implementations must be held to one set of vectors. The Python
+    # suite asserts this too, but only when the Rust tree is present; this
+    # makes it a gate of its own so a drifting copy cannot slip through a
+    # skipped test.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          for f in attestation.bin kds_vcek.der milan_ask.der milan_ark.der; do
+            cmp "tests/fixtures/snp/$f" "python/omne_attest/vectors/$f" \
+              && echo "ok  $f" \
+              || { echo "DRIFT: $f differs between the Rust and Python copies"; exit 1; }
+          done
