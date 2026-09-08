@@ -72,6 +72,26 @@ Every rejection is a named [`snp::Fail`]: `ArkNotPinned`, `ChipIdMismatch`,
 `ReportData`, `DebugEnabled`, `TcbBelowFloor`, and the rest. `Fail` implements
 `Display` and `std::error::Error`, so `?` and `anyhow` work as you would expect.
 
+## Python
+
+The same verifier is published for Python, as
+[`omne-attest` on PyPI](https://pypi.org/project/omne-attest/):
+
+```
+pip install omne-attest
+```
+
+It is a port, not a binding — no Rust toolchain needed — and it is held to the
+**same vectors** this crate asserts on. Both suites read the same four files,
+and a test fails if the two copies ever diverge. Source lives in
+[`python/`](python/), which has its own README.
+
+The Rust crate is the reference implementation. One difference is worth
+knowing: AMD's KDS issues VCEK certificates with serial number `0`, which
+RFC 5280 forbids. This crate's X.509 parser does not care; Python's
+`cryptography` currently warns and has said it will reject them in a future
+release. `python/README.md` names it and a test guards it.
+
 ## What it deliberately does not do
 
 - **Decide whether to trust AMD.** You supply the pinned root. Pin the wrong

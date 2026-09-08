@@ -1,0 +1,42 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "omne-attest"
+version = "0.1.0"
+description = "Verify an AMD SEV-SNP attestation report — parse, signature, AMD key chain, chip binding, policy"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE" }
+authors = [{ name = "Greg Brown", email = "greg@doneup.us" }]
+keywords = ["sev-snp", "attestation", "enclave", "amd", "confidential"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Security :: Cryptography",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Typing :: Typed",
+]
+dependencies = ["cryptography>=42"]
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[project.urls]
+Homepage = "https://github.com/OmneDAO/omne-attest"
+Source = "https://github.com/OmneDAO/omne-attest"
+"Rust crate" = "https://crates.io/crates/omne-attest"
+
+[tool.hatch.build.targets.wheel]
+packages = ["omne_attest"]
+
+[tool.hatch.build.targets.sdist]
+include = ["omne_attest", "tests", "README.md", "LICENSE", "NOTICE"]
