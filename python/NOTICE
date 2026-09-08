@@ -1,0 +1,10 @@
+omne-attest
+Copyright 2026 OmneDAO
+
+This product includes software developed as part of Omne
+(https://omne.foundation).
+
+The AMD certificates and the SEV-SNP attestation report under
+tests/fixtures/snp/ are AMD material and a report produced by AMD silicon;
+they are included as test vectors. See tests/fixtures/snp/README.md for
+provenance.
